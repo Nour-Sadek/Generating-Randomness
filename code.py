@@ -1,4 +1,4 @@
-"""Step One: Input Processing"""
+"""Stage One: Input Processing"""
 
 MIN_LEN = 100
 
@@ -48,5 +48,8 @@ while len(final_string) < MIN_LEN:
         print('Current data length is ' + str(current_length) + ', '
               + str(left_length) + ' symbols left')
 
+# Printing final string to the console
 print('Final data string:')
 print(final_string)
+
+"""Stage Two: Analyzing User Input"""
