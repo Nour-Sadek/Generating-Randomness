@@ -1,4 +1,4 @@
-"""Step One: Input Processing"""code
+"""Step One: Input Processing"""
 
 MIN_LEN = 100
 
