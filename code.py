@@ -1,3 +1,7 @@
+# Imported packages
+
+from itertools import product
+
 """Stage One: Input Processing
 
 Description
@@ -96,3 +100,47 @@ printed on a new line, ordered in ascending order of their decimal
 representation.
 
 """
+
+# First, create two dictionaries, <triad_dict_zeros> to store the number of
+# times 0 came after a triad and similarly <triad_dict_ones>, with all the
+# possible triads as keys, originally with values of 0
+
+list_of_triads = list(product(['0', '1'], repeat=3))
+keys_set = {''.join(tup) for tup in list_of_triads}
+
+triad_dict_zeros = dict.fromkeys(keys_set, 0)
+triad_dict_ones = dict.fromkeys(keys_set, 0)
+
+# Second, record the number of times 0's and 1's come after a triad
+
+i = 0
+working_string = final_string
+
+while i < len(working_string) - 3:
+
+    triad = working_string[i:(i + 3)]
+    following_char = working_string[i + 3]
+
+    if following_char == '0':
+        triad_dict_zeros[triad] += 1
+    else:
+        triad_dict_ones[triad] += 1
+
+    i = i + 1
+
+# Third, arrange the triads in ascending order
+
+decimal_binary_dict = {int(value, 2): value for value in keys_set}
+decimals_form_list = [key for key in decimal_binary_dict]
+
+decimals_form_list.sort()
+
+# Fourth, output the result in the required format
+
+for decimal_form in decimals_form_list:
+
+    triad = decimal_binary_dict[decimal_form]
+    counts_of_0 = triad_dict_zeros[triad]
+    counts_of_1 = triad_dict_ones[triad]
+
+    print(triad + ": " + str(counts_of_0) + ", " + str(counts_of_1))
