@@ -1,6 +1,45 @@
-# Imported packages
+# Imported functions
 
 from itertools import product
+from random import choice
+
+# Function(s)
+
+
+def input_processing(cur_user_input: str) -> str:
+    """Return a processed string where every character in <cur_user_input> that
+    is not 0 or 1 are filtered out.
+    """
+
+    # Check if <cur_user_input> has values other than 0's and 1's and filter
+    # out if yes
+
+    if len(cur_user_input) != (cur_user_input.count('0')
+                               + cur_user_input.count('1')):
+
+        # First, save the indexes of the characters that aren't 0's and 1's
+        unwanted_indexes = []
+        index = 0
+        for charac in cur_user_input:
+            if charac != '0' and charac != '1':
+                unwanted_indexes.append(index)
+            index = index + 1
+
+        # Second, use list comprehension to save the characters that exclude
+        # those indexes
+        filtered_user_input_list = [cur_user_input[j]
+                                    for j in range(len(cur_user_input))
+                                    if j not in unwanted_indexes]
+
+        # Third, make the <filtered_user_input> string from the
+        # <filtered_user_input_list> that only includes 0's and 1's
+        filtered_input = ''.join(filtered_user_input_list)
+
+    else:
+        filtered_input = cur_user_input
+
+    return filtered_input
+
 
 """Stage One: Input Processing
 
@@ -34,37 +73,14 @@ MIN_LEN = 100
 # of 0's and 1's until it reaches the MIN_LEN length
 final_string = ''
 
+
 # Create a while loop to continuously record the user's input until <MIN_LEN> is
 # reached
 
 while len(final_string) < MIN_LEN:
+
     user_input = input('Print a random string containing 0 or 1: ')
-
-    # Check if <user_input> has values other than 0's and 1's and filter out
-    # if yes
-
-    if len(user_input) != (user_input.count('0') + user_input.count('1')):
-
-        # First, save the indexes of the characters that aren't 0's and 1's
-        unwanted_indexes = []
-        i = 0
-        for char in user_input:
-            if char != '0' and char != '1':
-                unwanted_indexes.append(i)
-            i = i + 1
-
-        # Second, use list comprehension to save the characters that exclude
-        # those indexes
-        filtered_user_input_list = [user_input[i]
-                                    for i in range(len(user_input))
-                                    if i not in unwanted_indexes]
-
-        # Third, make the <filtered_user_input> string from the
-        # <filtered_user_input_list> that only includes 0's and 1's
-        filtered_user_input = ''.join(filtered_user_input_list)
-
-    else:
-        filtered_user_input = user_input
+    filtered_user_input = input_processing(user_input)
 
     # Add the filtered string to the final string
     final_string = final_string + filtered_user_input
@@ -128,19 +144,95 @@ while i < len(working_string) - 3:
 
     i = i + 1
 
+# Uncomment these lines of code if you want to display the statistics in the
+# console
+
 # Third, arrange the triads in ascending order
 
-decimal_binary_dict = {int(value, 2): value for value in keys_set}
-decimals_form_list = [key for key in decimal_binary_dict]
+# decimal_binary_dict = {int(value, 2): value for value in keys_set}
+# decimals_form_list = [key for key in decimal_binary_dict]
 
-decimals_form_list.sort()
+# decimals_form_list.sort()
 
 # Fourth, output the result in the required format
 
-for decimal_form in decimals_form_list:
+# for decimal_form in decimals_form_list:
 
-    triad = decimal_binary_dict[decimal_form]
-    counts_of_0 = triad_dict_zeros[triad]
-    counts_of_1 = triad_dict_ones[triad]
+#     triad = decimal_binary_dict[decimal_form]
+#     counts_of_0 = triad_dict_zeros[triad]
+#     counts_of_1 = triad_dict_ones[triad]
 
-    print(triad + ": " + str(counts_of_0) + ", " + str(counts_of_1))
+#     print(triad + ": " + str(counts_of_0) + ", " + str(counts_of_1))
+
+"""Stage Three: Predicting Future Input
+
+Description
+
+We will make the simplest version of AI to predict the next character of the
+user input. We will sequentially scan three characters of the user's sequence
+at a time and make a prediction of what goes next.
+
+Objectives
+
+1 - Ask the user to enter another test string of 0 and 1. We'll predict and 
+preprocess the new input in the same way as in the first stage, but the minimal 
+length of a string is four: 3 characters for prediction, 1 for accuracy 
+estimation. If this is not the case — ask to enter a whole new string again.
+2 - Going through the string entered by the user, estimate the frequency of
+occurrence of 0 or 1 obtained in stage 2 for each triad except the last one, 
+and generate predictions. Save the predictions and print them on a new line.
+3 - Test the accuracy of the predictor by comparing the real input (without the
+first three characters) and the predictions.
+
+"""
+
+MIN_LEN_TEST = 4
+final_user_input = ''
+
+# Save user input
+
+while len(final_user_input) < MIN_LEN_TEST:
+
+    user_input = input("Please enter a test string containing 0 or 1: ")
+    final_user_input = input_processing(user_input)
+
+# Predict input beyond the first 3 characters
+
+predicted_input = ''
+i = 0
+
+while len(predicted_input) < len(final_user_input) - 3:
+
+    triad = final_user_input[i:(i + 3)]
+    counts_of_zeros = triad_dict_zeros[triad]
+    counts_of_ones = triad_dict_ones[triad]
+
+    if counts_of_ones == counts_of_zeros:
+        predicted_input = predicted_input + choice(['0', '1'])
+    elif counts_of_zeros > counts_of_ones:
+        predicted_input = predicted_input + '0'
+    else:
+        predicted_input = predicted_input + '1'
+
+    i = i + 1
+
+print('predictions: ')
+print(predicted_input)
+
+# Test the accuracy of the predictor
+
+total_symbols = len(predicted_input)
+correct_symbols = 0
+
+user_input_to_compare = final_user_input[3:]
+ind = 0
+
+for char in user_input_to_compare:
+    if predicted_input[ind] == char:
+        correct_symbols += 1
+    ind = ind + 1
+
+accuracy = round(correct_symbols / total_symbols * 100, 2)
+
+print('Computer guessed ' + str(correct_symbols) + ' out of '
+      + str(total_symbols) + " symbols right (" + str(accuracy) + " %)")
