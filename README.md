@@ -19,11 +19,9 @@ HyperSkill describes each of its four available difficulty levels:
 
 This Repository contains two .py files:
 
-    code.py - Contains the code for the first three stages of the project which 
-    set the stage for the implementation of the game
+    code.py - Contains the code for the first three stages of the project which set the stage for the implementation of the game
 
-    Generating-Randomness-Game.py - Contains the program in which the game 
-    should be run
+    Generating-Randomness-Game.py - Contains the program in which the game should be run
 
 Project was built using python version 3.11.3
 
@@ -43,11 +41,12 @@ also be changed, saved under ALLOWANCE constant) will be displayed.
 
 
 3. You will be prompted to print a random string containing 0 or 1, and will be 
-prompted again if number of 0's or 1's don't exceed 4.
+prompted again if the total number of 0's and 1's doesn't exceed 4.
 
 
-4. After that, the program's prediction will be displayed and your current, 
-updated balance will be displayed.
+4. After that, the program's prediction as well as your current, updated 
+balance will be displayed.
 
 
-5. Steps 3 and 4 will keep repeated until you type enough.
+5. Steps 3 and 4 will keep repeating until you type enough, after which the
+program's execution ends.

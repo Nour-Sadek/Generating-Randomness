@@ -119,7 +119,7 @@ while len(final_string) < MIN_LEN:
 print('Final data string:')
 print(final_string)
 
-"""Analyze user's input to allow predictions (adopted from Stage 2's code"""
+"""Analyze user's input to allow predictions (adopted from Stage 2's code)"""
 
 # First, create two dictionaries, <triad_dict_zeros> to store the number of
 # times 0 came after a triad and similarly <triad_dict_ones>, with all the
